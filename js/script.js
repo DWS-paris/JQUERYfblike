@@ -4,45 +4,147 @@ $(document).ready(function(){
     // Fermer les popIns
     $('header aside a').click(function(evt){
         evt.preventDefault();
-        $(this).parent().parent().fadeOut(500);
+        $(this).parent().parent().fadeOut(250);
     });
 
 
-    // Faire une reqête Ajax en POST déclenchée par la soumission d'un formulaire
-    $('header form').submit(function(evt){
-        evt.preventDefault();
+    /*
+    Formulaire de connexion
+    */
+        // Faire une reqête Ajax en POST déclenchée par la soumission d'un formulaire
+        $('header form').submit(function(evt){
+            evt.preventDefault();
 
-        $.ajax({
+            $.ajax({
 
-            // Header de la requête
-            url: 'connexion.php',
-            type: 'POST',
-            // La méthode POST envoie des données dans le fichier référencé dans l'URL
-            data: $('form').serialize(),
+                // Header de la requête
+                url: 'connexion.php',
+                type: 'POST',
+                // La méthode POST envoie des données dans le fichier référencé dans l'URL
+                data: $('form').serialize(),
 
-            // Corps de la requête
-            success: function(data){
-                
-                // Vérifier le retour du PHP
-                if(data == 1){
-                    $('header aside p').text('Vous êtes à présent connecté')
-                    $('header aside').fadeIn(500);
+                // Corps de la requête
+                success: function(echoPhp){
+                    
+                    // Vérifier la valeur du echo PHP
+                    if(echoPhp == true){
+                        // Afficher le popIn
+                        $('header aside p').text('Vous êtes à présent connecté')
+                        $('header aside').fadeIn(250);
 
-                } else{
-                    $('header aside p').text('Vos identifiants ne sont pas reconnus')
-                    $('header aside').fadeIn(500);
-                };
+                    } else{
+                        // Afficher le popIn
+                        $('header aside p').text('Vos identifiants ne sont pas reconnus')
+                        $('header aside').fadeIn(250);
+                    };
+                },
+                error: function(err){
+                    // Déclenchée si le header de la requête est erroné
+                    console.log(err);
+                }
 
-
-            },
-            error: function(err){
-                // Déclenchée si le header de la requête est erroné
-                console.log(err);
-            }
+            });
 
         });
 
-    });
+    
+    /*
+    Formulaire d'inscription
+    */
 
+        
+
+        // Supprimer les class error
+            $('input, select').focus(function(){
+                $(this).removeClass('error');
+            });
+
+            $('fieldset:last').click(function(){
+                $('.genderLabel').removeClass('error');
+            });
+
+
+        // Soumission du formulaire
+            $('main form').submit(function(evt){
+                evt.preventDefault();
+
+                // Vérification des valeurs du formulaire
+                var formScore = 0;
+                var firstnameSignin = $('[name="firstnameSignin"]');
+                var lastnameSignin = $('[name="lastnameSignin"]');
+                var contactSignin = $('[name="contactSignin"]');
+                var contactConfirmSignin = $('[name="contactConfirmSignin"]');
+                var passwordSignin = $('[name="passwordSignin"]');
+                var birthDaySignin = $('[name="birthDaySignin"]');
+                var birthMonthSignin = $('[name="birthMonthSignin"]');
+                var birthYearSignin = $('[name="birthYearSignin"]');
+                var genderSignin;
+
+                // Fonction pour vérifier le nombre de caractères dans les champs
+                function inputChecker(input){
+                    if(input.val() == 0){
+                        // Ajouter la class error au input
+                        input.addClass('error');
+
+                        // Ramener la valeur de formScore à 0
+                        formScore = 0;
+
+                    } else{
+                        // Incrémenter formScore
+                        formScore++;
+                    };
+                };
+
+                
+                // Appel de la fonction pour vérifier le nombre de caractères dans les champs
+                inputChecker(firstnameSignin);
+                inputChecker(lastnameSignin);
+                inputChecker(contactSignin);
+                inputChecker(contactConfirmSignin);
+                inputChecker(passwordSignin);
+                inputChecker(birthDaySignin);
+                inputChecker(birthMonthSignin);
+                inputChecker(birthYearSignin);
+
+                // Vérifier que les champs contactSignin et contactConfirmSignin ont les mêmes valeurs
+                if(contactSignin.val() == contactConfirmSignin.val()){
+                    // Incrémenter formScore
+                    formScore++;
+
+                } else{
+                    // Ajouter la class error au input
+                    contactSignin.addClass('error');
+                    contactConfirmSignin.addClass('error');
+
+                    // Ramener la valeur de formScore à 0
+                    formScore = 0;
+                }
+
+                // Vérifier si le genre à été défini
+                if($('[name="genderSignin"]:checked').val()){
+                    // Incrémenter formScore
+                    formScore++;
+
+                } else{
+                    // Ajouter la class error au label
+                    $('.genderLabel').addClass('error');
+
+                    // Ramener la valeur de formScore à 0
+                    formScore = 0;
+                }
+
+
+                // Vérifier la valeur de formScore
+                if(formScore == 10){
+                    // Afficher le popIn
+                    $('header aside p').text('Votre inscription à bien été prise en compte')
+                    $('header aside').fadeIn(250);
+
+                    // Vider le formulaire
+                    $('main form')[0].reset();
+                };
+
+
+            })
 
 })

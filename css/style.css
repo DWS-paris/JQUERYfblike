@@ -55,6 +55,14 @@ Reset
         width: 2.5rem;
     }
 
+    input.error, select.error{
+        border: .1rem solid red;
+    }
+
+    label.error{
+        color: red;
+    }
+
     [type="radio"]:last-of-type{
         margin-left: 2rem;
     }
@@ -226,6 +234,7 @@ Style main
         border: .1rem solid #BDC7D3;
         margin-bottom: 1rem;
     }
+
 
     fieldset + p {
         color: #777;
