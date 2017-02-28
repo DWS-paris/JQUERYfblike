@@ -5,5 +5,4 @@ Projet réalisé dans le cadre de formations à la programmation web. Cet exerci
 Une requête Ajax en jQuery est présente dans ce projet, vous devez vous assuez de pouvoir l'ouvrir sur votre serveur local `http://localhost/`
 
 ### Présentation du projet
-Voici un aperçu du rendu final
 ![alt tag](img/cover.png)
