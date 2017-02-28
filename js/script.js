@@ -18,7 +18,7 @@ $(document).ready(function(){
             $.ajax({
 
                 // Header de la requête
-                url: 'connexion.php',
+                url: 'php/connexion.php',
                 type: 'POST',
                 // La méthode POST envoie des données dans le fichier référencé dans l'URL
                 data: $('form').serialize(),
@@ -31,6 +31,9 @@ $(document).ready(function(){
                         // Afficher le popIn
                         $('header aside p').text('Vous êtes à présent connecté')
                         $('header aside').fadeIn(250);
+                        
+                        // Vider le formulaire
+                        $('header form')[0].reset();
 
                     } else{
                         // Afficher le popIn
@@ -39,8 +42,9 @@ $(document).ready(function(){
                     };
                 },
                 error: function(err){
-                    // Déclenchée si le header de la requête est erroné
-                    console.log(err);
+                    // Afficher le popIn
+                    $('header aside p').text('Problème de requête : ' + err.status)
+                    $('header aside').fadeIn(250);
                 }
 
             });
@@ -51,19 +55,6 @@ $(document).ready(function(){
     /*
     Formulaire d'inscription
     */
-
-        
-
-        // Supprimer les class error
-            $('input, select').focus(function(){
-                $(this).removeClass('error');
-            });
-
-            $('fieldset:last').click(function(){
-                $('.genderLabel').removeClass('error');
-            });
-
-
         // Soumission du formulaire
             $('main form').submit(function(evt){
                 evt.preventDefault();
@@ -78,7 +69,6 @@ $(document).ready(function(){
                 var birthDaySignin = $('[name="birthDaySignin"]');
                 var birthMonthSignin = $('[name="birthMonthSignin"]');
                 var birthYearSignin = $('[name="birthYearSignin"]');
-                var genderSignin;
 
                 // Fonction pour vérifier le nombre de caractères dans les champs
                 function inputChecker(input){
@@ -95,7 +85,6 @@ $(document).ready(function(){
                     };
                 };
 
-                
                 // Appel de la fonction pour vérifier le nombre de caractères dans les champs
                 inputChecker(firstnameSignin);
                 inputChecker(lastnameSignin);
@@ -118,7 +107,7 @@ $(document).ready(function(){
 
                     // Ramener la valeur de formScore à 0
                     formScore = 0;
-                }
+                };
 
                 // Vérifier si le genre à été défini
                 if($('[name="genderSignin"]:checked').val()){
@@ -131,7 +120,7 @@ $(document).ready(function(){
 
                     // Ramener la valeur de formScore à 0
                     formScore = 0;
-                }
+                };
 
 
                 // Vérifier la valeur de formScore
@@ -143,8 +132,14 @@ $(document).ready(function(){
                     // Vider le formulaire
                     $('main form')[0].reset();
                 };
+            });
+            
+        // Supprimer les class error
+            $('input, select').focus(function(){
+                $(this).removeClass('error');
+            });
 
-
-            })
-
+            $('fieldset:last').click(function(){
+                $('.genderLabel').removeClass('error');
+            });
 })
