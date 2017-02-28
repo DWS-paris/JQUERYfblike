@@ -2,7 +2,7 @@
 $(document).ready(function(){
 
     // Faire une reqête Ajax en POST déclenchée par la soumission d'un formulaire
-    $('form').submit(function(evt){
+    $('header form').submit(function(evt){
         evt.preventDefault();
 
         $.ajax({
@@ -19,11 +19,11 @@ $(document).ready(function(){
                 // Vérifier le retour du PHP
                 if(data == 1){
                     console.log('Utilisateur connecté');
-                    $('main').html('<p>Utilisateur connecté<p>')
+                    $('main').html('<section><p>Utilisateur connecté<p></section>')
 
                 } else{
                     console.log('Utilisateur inconnu');
-                    $('main').html('<p>Utilisateur inconnu<p>')
+                    $('main').html('<section><p>Utilisateur inconnu<p></section>')
                 };
 
 
