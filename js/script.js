@@ -1,6 +1,13 @@
 // Attendre le chargement du DOM
 $(document).ready(function(){
 
+    // Fermer les popIns
+    $('header aside a').click(function(evt){
+        evt.preventDefault();
+        $(this).parent().parent().fadeOut(500);
+    });
+
+
     // Faire une reqête Ajax en POST déclenchée par la soumission d'un formulaire
     $('header form').submit(function(evt){
         evt.preventDefault();
@@ -18,12 +25,12 @@ $(document).ready(function(){
                 
                 // Vérifier le retour du PHP
                 if(data == 1){
-                    console.log('Utilisateur connecté');
-                    $('main').html('<section><p>Utilisateur connecté<p></section>')
+                    $('header aside p').text('Vous êtes à présent connecté')
+                    $('header aside').fadeIn(500);
 
                 } else{
-                    console.log('Utilisateur inconnu');
-                    $('main').html('<section><p>Utilisateur inconnu<p></section>')
+                    $('header aside p').text('Vos identifiants ne sont pas reconnus')
+                    $('header aside').fadeIn(500);
                 };
 
 

@@ -97,6 +97,7 @@ Style Header
 
     header img {
         width: 22rem;
+        margin-left: -2rem;
     }
 
     header img, header form{
@@ -146,9 +147,42 @@ Style Header
         padding: .7rem;
     }
 
+    header aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, .5);
+
+        display: none;
+    }
+
+    header aside div {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        background: white;
+        padding: 4rem;
+
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    header aside a {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #3b5997;
+        color: white;
+        padding: .5rem;
+    }
+
 /*
 Style main
 */
+
+
     main{
         padding-top: 3rem;
 
