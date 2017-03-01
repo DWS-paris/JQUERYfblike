@@ -1,61 +1,93 @@
 // Attendre le chargement du DOM
 $(document).ready(function(){
 
-    // Fermer les popIns
-    $('header aside a').click(function(evt){
-        evt.preventDefault();
-        $(this).parent().parent().fadeOut(250);
+    // Charger le contenu : header.html
+    $.get('html/header.html').done(function(content){
+        $('header').append(content);
+
+    }).always(function(){
+        // Activer le formulaire d'inscription
+        logInFormActive();
+    });
+    
+    // Charger le contenu : footer.html
+    $.get('html/footer.html').done(function(content){
+        $('footer').append(content);
     });
 
+    // Charger le contenu : map.html
+    $.get('html/map.html').done(function(content){
+        $('main article:first').append(content);
+    });
+
+    // Charger le contenu : signin.html
+    $.get('html/signin.html').done(function(content){
+        $('main article:last').append(content);
+
+    }).always(function(){
+        // Activer le formulaire d'inscription
+        signInFormActive();
+    });
+
+    
 
     /*
     Formulaire de connexion
     */
-        // Faire une reqête Ajax en POST déclenchée par la soumission d'un formulaire
-        $('header form').submit(function(evt){
-            evt.preventDefault();
+        function logInFormActive(){
+            // Faire une reqête Ajax en POST déclenchée par la soumission d'un formulaire
+            $('header form').submit(function(evt){
+                evt.preventDefault();
 
-            $.ajax({
+                $.ajax({
 
-                // Header de la requête
-                url: 'php/connexion.php',
-                type: 'POST',
-                // La méthode POST envoie des données dans le fichier référencé dans l'URL
-                data: $('form').serialize(),
+                    // Header de la requête
+                    url: 'php/connexion.php',
+                    type: 'POST',
+                    // La méthode POST envoie des données dans le fichier référencé dans l'URL
+                    data: $('form').serialize(),
 
-                // Corps de la requête
-                success: function(echoPhp){
-                    
-                    // Vérifier la valeur du echo PHP
-                    if(echoPhp == true){
-                        // Afficher le popIn
-                        $('header aside p').text('Vous êtes à présent connecté')
-                        $('header aside').fadeIn(250);
+                    // Corps de la requête
+                    success: function(echoPhp){
                         
-                        // Vider le formulaire
-                        $('header form')[0].reset();
+                        // Vérifier la valeur du echo PHP
+                        if(echoPhp == true){
+                            // Afficher le popIn
+                            $('header aside p').text('Vous êtes à présent connecté')
+                            $('header aside').fadeIn(250);
+                            
+                            // Vider le formulaire
+                            $('header form')[0].reset();
 
-                    } else{
+                        } else{
+                            // Afficher le popIn
+                            $('header aside p').text('Vos identifiants ne sont pas reconnus')
+                            $('header aside').fadeIn(250);
+                        };
+                    },
+                    error: function(err){
                         // Afficher le popIn
-                        $('header aside p').text('Vos identifiants ne sont pas reconnus')
+                        $('header aside p').text('Problème de requête : ' + err.status)
                         $('header aside').fadeIn(250);
-                    };
-                },
-                error: function(err){
-                    // Afficher le popIn
-                    $('header aside p').text('Problème de requête : ' + err.status)
-                    $('header aside').fadeIn(250);
-                }
+                    }
+
+                });
 
             });
 
-        });
+            // Fermer les popIns
+            $('header aside a').click(function(evt){
+                evt.preventDefault();
+                $(this).parent().parent().fadeOut(250);
+            });
+
+        };
 
     
     /*
     Formulaire d'inscription
     */
-        // Soumission du formulaire
+        function signInFormActive(){
             $('main form').submit(function(evt){
                 evt.preventDefault();
 
@@ -133,6 +165,8 @@ $(document).ready(function(){
                     $('main form')[0].reset();
                 };
             });
+
+        
             
         // Supprimer les class error
             $('input, select').focus(function(){
@@ -142,4 +176,6 @@ $(document).ready(function(){
             $('fieldset:last').click(function(){
                 $('.genderLabel').removeClass('error');
             });
+
+        };
 })
